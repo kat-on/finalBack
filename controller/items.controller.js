@@ -16,23 +16,38 @@ module.exports.create = (req, res) => {
 
 app.use((err, req, res, next) => {
     if (err.code === "INCORRECT_FILETYPE") {
-      res.status(422).json({ error: 'Only images are allowed' });
-      return;
+        res.status(422).json({ error: 'Only images are allowed' });
+        return;
     }
     if (err.code === "LIMIT_FILE_SIZE") {
-      res.status(422).json({ error: 'Allow file size is 500KB' });
-      return;
+        res.status(422).json({ error: 'Allow file size is 500KB' });
+        return;
     }
-  });
-  
+});
+
 
 //getting all Items
-module.exports.getAll = ((req, res) => {
+module.exports.getAll = ((res) => {
     Items.find({}, (err, items) => {
         if (err) {
             res.send(err);
         }
         res.send({ items: items });
+    });
+});
+
+
+module.exports.calculate = ((id, res) => {
+    Items.findById(id, (err, items) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            if (items) {
+                res.send(items.rate)
+            } else {
+                res.status(404).send("error")
+            }
+        }
     });
 });
 

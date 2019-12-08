@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const multer = require("multer");
 const cors = require("cors");
 const port = 5000
+const path = require('path');
 
 //const pusher = require('pusher');
 
@@ -14,7 +15,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 // Parse requests of content-type - application/json
 app.use(bodyParser.json())
-
+app.use(cors());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -40,6 +41,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // Import Models
 
 const createUser = require('./controller/accountsUsers.controller.js');
+const itemController = require('./controller/items.controller');
 
 app.post('/accountsUsers', function (req, res) {
   console.log(req.body)
@@ -51,7 +53,7 @@ app.post("/login", (req, res)=>{
   createUser.login(username, password, res)
 });
 
-app.use('/static', express.static(path.join(__dirname, 'uploads')))
+app.use('/files', express.static(path.join(__dirname, 'uploads')))
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
@@ -68,7 +70,7 @@ var storage = multer.diskStorage({
     cb(null, './uploads')
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now()+'.jpg')
+    cb(null, file.fieldname + '-' + Date.now()+file.originalname)
   },
   fileFilter
 })
@@ -99,7 +101,11 @@ app.post('/addItem', (req, res)=>{
 })
 
 app.get('/getItems', (req,res)=>{
-  createItem.getAll(req,res)
+  createItem.getAll(res)
+})
+
+app.post("/calculate",(req,res)=>{
+  itemController.calculate(req.body.id,res)
 })
 // ------------------------------------------------------------
 // listen for requests

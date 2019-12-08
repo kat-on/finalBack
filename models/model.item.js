@@ -12,12 +12,12 @@ const ItemSchema = new Schema(
         sitingcapacity: { type: Number, require: false },
         //color:{type:String, require: false},
         location: { type: String, require: true },
-        rate: { type: Number, require: true }
+        rate: { type: Number, require: true },
         //status: { type: Boolean, require: true },
 
     }, {
-    collection: 'abangItems'
-}
+        collection: 'abangItems'
+    }
 
 );
 module.exports = mongoose.model('Items', ItemSchema);
