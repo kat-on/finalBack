@@ -32,7 +32,7 @@ module.exports.getAll = ((res) => {
         if (err) {
             res.send(err);
         }
-        res.send({ items: items });
+        res.json({ items });
     });
 });
 

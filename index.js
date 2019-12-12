@@ -42,6 +42,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const createUser = require('./controller/accountsUsers.controller.js');
 const itemController = require('./controller/items.controller');
+const Items = require('./models/model.item.js');
 
 app.post('/accountsUsers', function (req, res) {
   console.log(req.body)
@@ -97,6 +98,7 @@ app.use((err, req, res, next) => {
 //------------------------- Add Item with image
 const createItem = require('./controller/items.controller.js');
 app.post('/addItem', (req, res)=>{
+  console.log("addingitem")
   createItem.create(req,res)
 })
 
@@ -106,6 +108,16 @@ app.get('/getItems', (req,res)=>{
 
 app.post("/calculate",(req,res)=>{
   itemController.calculate(req.body.id,res)
+})
+
+app.get("/search",(req,res)=>{
+  Items.find(req.body, (err, item) => {
+    if(err){
+      res.json(err)
+    }else{
+      res.json(item)
+    }
+  })
 })
 // ------------------------------------------------------------
 // listen for requests

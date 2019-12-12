@@ -7,13 +7,13 @@ var AccountsUsersSchema = new Schema(
         firstname: { type: String, required: true },
         address: { type: String, required: true },
         age: { type: Number, required: true },
-        email: { type: String, required: true },
         contactnumber: { type: String, required: true },
+        email: { type: String, required: true },
         username: { type: String, required: true },
         password: { type: String, required: true }
 
 
-    },  {
+    }, {
         collection: 'abangUser'
     }
 );
